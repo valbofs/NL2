@@ -63,7 +63,7 @@ end
 end
 
 function checkBoss()
-if game:GetService("Workspace").spawnedBosses:FindFirstChild("Elemental Cyborg") ~= nil then
+if game:GetService("Workspace").spawnedBosses:FindFirstChild(_G.bossName) ~= nil then
 return true
 else
 return false
@@ -231,18 +231,34 @@ _G.autoevolve = false
 end
 end)
 
+local tableboss = {}
+table.insert(tableboss,"Select a boss")
+for i,v in pairs(game:GetService("Workspace").bossArenas:GetChildren()) do 
+table.insert(tableboss,v.Name)
+end
+
+ui:AddDropdown({unpack(tableboss)}, function(boss)
+
+if boss ~= "Select a boss" then
+
+_G.bossName = tostring(boss)
+print(_G.bossName)
+end
+
+end)
+
 ui:AddToggle("Auto-Kill Boss", function()
 if q17 == false then q17 = true
 
 _G.autoboss = true while _G.autoboss == true do wait()
 
-if checkBoss() and game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChild("HumanoidRootPart") ~= nil and game:GetService("Workspace").spawnedBosses:FindFirstChild("Elemental Cyborg"):FindFirstChild("UpperTorso") ~= nil then
+if checkBoss() and game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChild("HumanoidRootPart") ~= nil and game:GetService("Workspace").spawnedBosses:FindFirstChild(_G.bossName):FindFirstChild("UpperTorso") ~= nil then
 
 if _G.FLYING == false or _G.FLYING == nil then
 	FLY()
 end
 	
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").spawnedBosses["Elemental Cyborg"].UpperTorso.CFrame
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").spawnedBosses[_G.bossName].UpperTorso.CFrame
 
 if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChild("HumanoidRootPart") ~= nil then
 
@@ -269,7 +285,7 @@ local args = {
     [1] = "energyBlast",
     [2] = {
         ["whichHand"] = "rightHand",
-        ["destination"] = game:GetService("Workspace").spawnedBosses["Elemental Cyborg"].UpperTorso.Position
+        ["destination"] = game:GetService("Workspace").spawnedBosses[_G.bossName].UpperTorso.Position
     }
 }
 
@@ -283,8 +299,8 @@ end
 
 end
 
-if game:GetService("Workspace").bossArenas["Elemental Cyborg"]:FindFirstChild("tokenPart") then
-for i,v in pairs(game:GetService("Workspace").bossArenas["Elemental Cyborg"].tokenPart.whichPlayers:GetChildren()) do
+if game:GetService("Workspace").bossArenas[_G.bossName]:FindFirstChild("tokenPart") then
+for i,v in pairs(game:GetService("Workspace").bossArenas[_G.bossName].tokenPart.whichPlayers:GetChildren()) do
 if v.Name == game.Players.LocalPlayer.Name then
 
 print("token spawned")
@@ -292,7 +308,7 @@ print("token spawned")
 local args = {
     [1] = "collectToken",
     [2] = {
-        ["serverTokenPart"] = workspace.bossArenas["Elemental Cyborg"].tokenPart
+        ["serverTokenPart"] = workspace.bossArenas[_G.bossName].tokenPart
     }
 }
 
